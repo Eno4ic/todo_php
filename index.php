@@ -2,9 +2,14 @@
 include 'base.php';
 
 $BASE = new TodoBase();
-$tasks = $BASE->get_tasks(1);
-print_r($tasks);
-//$BASE->create_task('do some think with site pls!', 1);
+
+
+//$BASE->delete_task(1, 1);
+
+echo $BASE->create_user('admin1', 'sdf','sdfdf');
+
+//$tasks = $BASE->create_user();
+//print_r($tasks);
 
 /*
 $pdo = new PDO('sqlite:db.sqlite3');
