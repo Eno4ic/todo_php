@@ -59,11 +59,13 @@ class TodoBase
         return $request->fetchAll();
     }
 
-    public function create_user($name, $password, $password_repeat){    // Сделать нормальную валидацию !
+    public function create_user($name, $password, $password_repeat){
         foreach ($this->get_users() as $user){
             if (in_array($name, $user))
                 return "Такое имя пользователя уже занято!";
         }
+        if (count($password)<8)
+            return "Пароль должен быть не менее 8 символов";
         if ($password != $password_repeat)
             return "Пароли должны совпадать!";
         $sql = "INSERT INTO users(name, password) VALUES (:name, :password)";
@@ -71,10 +73,17 @@ class TodoBase
         $request->bindValue(':name', $name , PDO::PARAM_STR);
         $request->bindValue(':password', $password, PDO::PARAM_STR);
         $request->execute();
-        return "Зарегистрированно!";
+        //return "Зарегистрированно!"; вернуть null на успех операции
     }
 
-    public function login(){
+    public function login($name, $password){          //  Если авторизация успешна - null, если нет то, текст ошибки
+        $sql = "SELECT name, password FROM users WHERE name=:name and password=:password";
+        $request = $this->db->query($sql);
+        $request->bindValue(":name", $name, PDO::PARAM_STR);
+        $request->bindValue(':password', $password, PDO::PARAM_STR);
+        $request->execute();
+        if(empty($request->fetchAll()))
+            return "Неверный логин или пароль!";
     }
 }
 

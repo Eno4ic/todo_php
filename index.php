@@ -6,8 +6,8 @@ $BASE = new TodoBase();
 
 //$BASE->delete_task(1, 1);
 
-echo $BASE->create_user('admin1', 'sdf','sdfdf');
-
+$BASE->login('admin', 'admin');
+echo 'fgh';
 //$tasks = $BASE->create_user();
 //print_r($tasks);
 
