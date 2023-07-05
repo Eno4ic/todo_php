@@ -64,7 +64,7 @@ class TodoBase
             if (in_array($name, $user))
                 return "Такое имя пользователя уже занято!";
         }
-        if (count($password)<8)
+        if (count(str_split($password))<8)
             return "Пароль должен быть не менее 8 символов";
         if ($password != $password_repeat)
             return "Пароли должны совпадать!";
@@ -73,17 +73,19 @@ class TodoBase
         $request->bindValue(':name', $name , PDO::PARAM_STR);
         $request->bindValue(':password', $password, PDO::PARAM_STR);
         $request->execute();
-        //return "Зарегистрированно!"; вернуть null на успех операции
     }
 
     public function login($name, $password){          //  Если авторизация успешна - null, если нет то, текст ошибки
-        $sql = "SELECT name, password FROM users WHERE name=:name and password=:password";
+        $sql = "SELECT rowid, name, password FROM users WHERE name=:name and password=:password";
         $request = $this->db->query($sql);
         $request->bindValue(":name", $name, PDO::PARAM_STR);
         $request->bindValue(':password', $password, PDO::PARAM_STR);
         $request->execute();
-        if(empty($request->fetchAll()))
+        $result = $request->fetchAll();
+        if(empty($result))
             return "Неверный логин или пароль!";
+        else
+            return (int)$result[0][0];
     }
 }
 

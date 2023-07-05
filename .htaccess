@@ -10,4 +10,5 @@ AddCharset UTF-8 .html
 Header set X-Content-Type-Options nosniff
 
 RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/(css)/
 RewriteRule .* index.php [L]

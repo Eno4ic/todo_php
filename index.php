@@ -1,20 +1,11 @@
 <?php
-include 'base.php';
 
-$BASE = new TodoBase();
+$page_name = 'main';
+$uri_array = explode('/',$_SERVER['REQUEST_URI']);
 
-
-//$BASE->delete_task(1, 1);
-
-$BASE->login('admin', 'admin');
-echo 'fgh';
-//$tasks = $BASE->create_user();
-//print_r($tasks);
-
-/*
-$pdo = new PDO('sqlite:db.sqlite3');
-$request = $pdo->query("CREATE TABLE tasks(id INT PRIMARY KEY , task VARCHAR NOT NULL, complite VARCHAR NOT NULL , user INT NOT NULL )");
-$request->execute();
-*/
-
-//"INSERT INTO users (name, password) VALUES ('admin', 'admin')"
+if($uri_array[1])
+    $page_name = $uri_array[1];
+if(file_exists("views/". $page_name .".php"))
+    include_once "views/". $page_name .".php";
+else
+    http_response_code(404);
