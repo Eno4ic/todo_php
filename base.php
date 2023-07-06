@@ -14,7 +14,19 @@ class TodoBase
         $request->execute();
         return $request->fetchAll();
     }
+
+    public function get_one_task($user_id, $task_id){
+        $sql = "SELECT rowid, task, complite, user FROM tasks WHERE user = :user_id and rowid=:task_id";
+        $request = $this->db->prepare($sql);
+        $request->bindValue(':task_id', $task_id);
+        $request->bindValue(':user_id', $user_id);
+        $request->execute();
+        return $request->fetchAll();
+    }
+
     public function create_task($user_id, $task){       // Создать таск для пользователя по id
+        if(empty($task))
+            return "Введите задачу!";
         $sql = "INSERT INTO tasks (task, complite, user) VALUES(:task, FALSE, :user_id)";
         $request = $this->db->prepare($sql);
         $request->bindValue(':task', $task, PDO::PARAM_STR);
@@ -85,7 +97,7 @@ class TodoBase
         if(empty($result))
             return "Неверный логин или пароль!";
         else
-            return (int)$result[0][0];
+            return array($result[0][0], $result[0][1]);
     }
 }
 

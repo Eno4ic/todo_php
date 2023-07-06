@@ -10,8 +10,9 @@ if(!empty($_SESSION))
 // Код выполняемый при авторизации
 if(($_SERVER['REQUEST_METHOD'] == 'POST') && (!empty($_POST['name']))) {
     $request = $BASE->login($_POST['name'], $_POST['password']);
-    if(is_integer($request)){
-        $_SESSION['user_id'] = $request;
+    if(is_array($request)){
+        $_SESSION['user_id'] = $request[0];
+        $_SESSION['user_name'] = $request[1];
         header("Location: /main");
     }else
         $error = $request;
