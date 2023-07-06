@@ -9,7 +9,7 @@ if(empty($_SESSION))
 else{
     $task = $BASE->get_one_task($_SESSION["user_id"], $_GET['task']);
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
-        $BASE->update_task($_SESSION["user_id"], $task[0][0],$_POST['complite'], $_POST['task'] );
+        $BASE->update_task($_SESSION["user_id"], $task[0][0],(int)$_POST['complite'], $_POST['task'] );
         header("Location: /");
     }
 }
@@ -64,8 +64,8 @@ else{
     <form action=" " method="POST">
         <textarea class="text" name="task" placeholder="<?echo $task[0][1];?>"></textarea>
         <select class="change" name="complite">
-            <option value="TRUE" <?echo $selected = (bool)$task[0][2] ? "selected" : null;?>>Выполнено</option>
-            <option value="FALSE" <?echo $selected = (bool)$task[0][2] ? null : "selected";?>>не выполнено</option>
+            <option value="1" <?echo $selected = (bool)$task[0][2] ? "selected" : null;?>>Выполнено</option>
+            <option value="0" <?echo $selected = (bool)$task[0][2] ? null : "selected";?>>Не выполнено</option>
         </select>
         <input class="submit" type="submit" value="Изменить">
     </form>

@@ -83,7 +83,7 @@ class TodoBase
         $sql = "INSERT INTO users(name, password) VALUES (:name, :password)";
         $request = $this->db->prepare($sql);
         $request->bindValue(':name', $name , PDO::PARAM_STR);
-        $request->bindValue(':password', $password, PDO::PARAM_STR);
+        $request->bindValue(':password', md5($password), PDO::PARAM_STR);
         $request->execute();
     }
 
@@ -91,7 +91,7 @@ class TodoBase
         $sql = "SELECT rowid, name, password FROM users WHERE name=:name and password=:password";
         $request = $this->db->query($sql);
         $request->bindValue(":name", $name, PDO::PARAM_STR);
-        $request->bindValue(':password', $password, PDO::PARAM_STR);
+        $request->bindValue(':password', md5($password), PDO::PARAM_STR);
         $request->execute();
         $result = $request->fetchAll();
         if(empty($result))
